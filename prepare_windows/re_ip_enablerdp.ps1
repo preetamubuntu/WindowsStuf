@@ -1,9 +1,9 @@
-$username = "administrator"
-$compname = "zofflinerootca" # change the name
-$ipv4 = "192.168.10.100" # change ip
-$sm = "24"
+$compname = "zofflinerootca" # change
+$ipv4 = "192.168.10.125" # offlinerootca
+$sm = "16"
 $gw = "192.168.0.253"
 $hatchery = "192.168.0.253"
+
 
 $nic = get-netadapter # assuming it one. keeping it simple
 $ipdetails = $nic | Get-NetIPConfiguration
@@ -19,11 +19,9 @@ if ($ipdetails.IPv4DefaultGateway) {
 # allocated IP
 $nic | New-NetIPAddress -AddressFamily IPv4 -IPAddress $ipv4 -PrefixLength $sm -DefaultGateway $gw
 # set dns
-$nic | Set-DnsClientServerAddress -ServerAddresses ($hatchery, $ADDNS)
+$nic | Set-DnsClientServerAddress -ServerAddresses ($ADDNS, $hatchery)
 
-# enable remote connection
-Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Name fDenyTSConnections -Value 0
-# allow RDP
-Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+rename-computer -newname $compname
+start-sleep -Seconds 30
+Restart-Computer
 
-# rename-computer -newname $compname -localcredential $username -restart
