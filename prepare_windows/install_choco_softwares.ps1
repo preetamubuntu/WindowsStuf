@@ -1,4 +1,8 @@
-write-host "install choco"
+<#
+install chocolotey and basic softwares, since you will using console
+It is good idea to change keyboard as your region
+#>
+write-host "lets install choco......for installing software"
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 # set execution policy to remote
 write-host "set the execution policy back to remote signed"
@@ -8,6 +12,7 @@ write-host "enable RDP"
 Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server' -Name fDenyTSConnections -Value 0
 # allow RDP
 write-host "open firewall for RDP"
+# configure firewall
 Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
 # add deutsch Keyboard
 write-host "Add German keyboard"
@@ -16,6 +21,7 @@ $lang = Get-WinUserLanguageList
 $lang[0].InputMethodTips.Add($keyboardlang) # set deutsch keyboard
 Set-WinUserLanguageList -LanguageList $lang
 Set-WinDefaultInputMethodOverride -InputTip $keyboardlang
+# but you still need to change the keyboard using shortcut
 
 write-host "Install list of basic softwares"
 
