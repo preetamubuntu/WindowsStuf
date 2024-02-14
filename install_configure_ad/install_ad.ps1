@@ -1,5 +1,5 @@
 # Purpose: To install one domain controller in single forest
-
+Install-WindowsFeature RSAT-Role-Tools, RSAT-DNS-Server, GPMC
 $forestname = "zonkos.ict" # your forest name
 $forestmode = "WinThreshold" # Windows Server 2016
 $domainmode = "WinThreshold" # Windows Server 2016
