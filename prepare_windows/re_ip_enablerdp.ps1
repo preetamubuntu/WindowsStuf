@@ -1,8 +1,13 @@
-$compname = "zofflinerootca" # change
-$ipv4 = "192.168.10.125" # offlinerootca
-$sm = "16"
-$gw = "192.168.0.253"
-$hatchery = "192.168.0.253"
+<#
+Goals : Now before you do anything you must take a snapshot
+because after this OS is completely customized as per your needs
+#>
+
+$compname = "zonkosrootca" # change as per your environment
+$ipv4 = "192.168.10.125" # ! Change as per your environment
+$sm = "16" # ! Change as per your environment
+$gw = "192.168.0.253"  # ! Change as per your environment
+$hatchery = "192.168.0.253" # ! Change as per your environment
 
 
 $nic = get-netadapter # assuming it one. keeping it simple
@@ -19,9 +24,10 @@ if ($ipdetails.IPv4DefaultGateway) {
 # allocated IP
 $nic | New-NetIPAddress -AddressFamily IPv4 -IPAddress $ipv4 -PrefixLength $sm -DefaultGateway $gw
 # set dns
-$nic | Set-DnsClientServerAddress -ServerAddresses ($ADDNS, $hatchery)
+$nic | Set-DnsClientServerAddress -ServerAddresses ($ADDNS, $hatchery) # ADDNS is put on priority for AD based resolution
 
+# changing computer name
+write-host "Changing the name of the computer"
 rename-computer -newname $compname
-start-sleep -Seconds 30
+start-sleep -Seconds 15
 Restart-Computer
-
