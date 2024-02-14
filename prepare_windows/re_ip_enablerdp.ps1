@@ -29,5 +29,6 @@ $nic | Set-DnsClientServerAddress -ServerAddresses ($ADDNS, $hatchery) # ADDNS i
 # changing computer name
 write-host "Changing the name of the computer"
 rename-computer -newname $compname
+write-host "restarting in 15 seconds"
 start-sleep -Seconds 15
 Restart-Computer
