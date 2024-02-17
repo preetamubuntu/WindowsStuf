@@ -1,19 +1,18 @@
-# Purpose: To install one domain controller in single forest
-Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
-Install-WindowsFeature RSAT-Role-Tools, RSAT-DNS-Server, GPMC
-$forestname = "zonkos.ict" # your forest name
-$forestmode = "WinThreshold" # Windows Server 2016
-$domainmode = "WinThreshold" # Windows Server 2016
-$NetbiosName = "zonkos"
+
 $safeadminpwd = Read-Host -Prompt   'Enter SafeMode Admin Password' -AsSecureString
 
+
+# install powershell module
+Install-WindowsFeature -Name AD-Domain-Services
+Install-WindowsFeature RSAT-Role-Tools, RSAT-DNS-Server, GPMC
+
 $createforest = @{
-    DomainNetbiosName             = $NetbiosName
+    DomainNetbiosName             = $netbiosname
     InstallDNS                    = $true
     CreateDNSDelegation           = $false
-    #   SysvolPath           = "d:\SYSVOL" not applicable for lab
-    #   DatabasePath         = "d:\NTDS" not applicable for lab
-    #   LogPath              = "e:\Logs" not applicable for lab
+    SysvolPath                    = "k:\SYSVOL"
+    DatabasePath                  = "k:\NTDS"
+    LogPath                       = "l:\Logs"
     DomainName                    = $forestname
     DomainMode                    = $domainmode
     ForestMode                    = $forestmode
@@ -21,7 +20,8 @@ $createforest = @{
     force                         = $true
     SafeModeAdministratorPassword = $safeadminpwd
 }
-Install-ADDSForest @createforest
-Start-Sleep -seconds 30
+Install-ADDSForest $createforest
+write-host "Installation is finished, now sleeping 30 seconds z!!!z!!!z!!!z!!!z"
 Get-AdDomain
+Start-Sleep -seconds 30
 Restart-Computer
