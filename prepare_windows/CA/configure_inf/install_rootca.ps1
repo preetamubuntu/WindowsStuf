@@ -7,12 +7,13 @@ if (test-path $env:windir\$filename) {
     Add-WindowsFeature Adcs-Cert-Authority -IncludeManagementTools
     Install-AdcsCertificationAuthority -CAType StandaloneRootCA `
         -CACommonName $rootcacn `
-        -KeyLength $keylength -HashAlgorithm $HASHALO `
-        -rootcavalidityperiod Years -rootcavalidityperiodUnits $rootcavalidityperiod `
-        -cryptoproviderName  $cryptoprovider
+        -KeyLength $keylength -HashAlgorithmName $HASHALO `
+        -ValidityPeriod Years -ValidityPeriodUnits $rootcavalidityperiod `
+        -CryptoProviderName  $cryptoprovider `
+        -Force
 }
 else {
-    write-host "Check if $filename is present"
+    write-host "Check if $filename is present at $env:windir"
 }
 
 <#
