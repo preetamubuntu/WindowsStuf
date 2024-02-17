@@ -20,8 +20,9 @@ Set-Variable -Name rootcavalidityperiod -Value "10" -Scope Global
 Set-Variable -Name rootcaipv4 -Value "192.168.10.125" -Scope Global
 
 # subca
-Set-Variable -Name subcacn -Value "" -Scope Global
-Set-Variable -Name subcavalidityperiod -Value "" -Scope Global
+Set-Variable -Name subcaipv4 -Value "192.168.10.125" -Scope Global
+Set-Variable -Name subcacn -Value "zonkossca" -Scope Global
+Set-Variable -Name subcavalidityperiod -Value "5" -Scope Global
 
 
 # ad specific variables
