@@ -1,15 +1,18 @@
-$filename = "CAPolicy.ini"
-Copy-Item $filename $env:windir
+$filename = "CAPolicy.inf"
+Copy-Item $filename $env:windir -Verbose
 
 # install CA Authority
 if (test-path $env:windir\$filename) {
     write-host "file is present, installing....CA"
     Add-WindowsFeature Adcs-Cert-Authority -IncludeManagementTools
     Install-AdcsCertificationAuthority -CAType StandaloneRootCA `
-        -rootcacn $rootcacn `
+        -CACommonName $rootcacn `
         -KeyLength $keylength -HashAlgorithm $HASHALO `
         -rootcavalidityperiod Years -rootcavalidityperiodUnits $rootcavalidityperiod `
         -cryptoproviderName  $cryptoprovider
+}
+else {
+    write-host "Check if $filename is present"
 }
 
 <#
