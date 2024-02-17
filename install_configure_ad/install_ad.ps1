@@ -21,7 +21,16 @@ $createforest = @{
     SafeModeAdministratorPassword = $safeadminpwd
 }
 Install-ADDSForest $createforest
-write-host "Installation is finished, now sleeping 30 seconds z!!!z!!!z!!!z!!!z"
-Get-AdDomain
-Start-Sleep -seconds 30
-Restart-Computer
+
+Install-ADDSForest -DomainName $forestname `
+    -SafeModeAdministratorPassword $safeadminpwd `
+    -CreateDnsDelegation $false `
+    -DatabasePath "k:\NTDS" `
+    -DomainMode $domainmode `
+    -DomainNetbiosName $netbiosname `
+    -ForestMode $forestmode `
+    -InstallDns $true `
+    -LogPath "l:\Logs" `
+    -NoRebootOnCompletion $true `
+    -SysvolPath "k:\SYSVOL" `
+    -Force
