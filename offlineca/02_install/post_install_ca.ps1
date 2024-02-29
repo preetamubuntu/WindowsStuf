@@ -1,10 +1,8 @@
-$domain = "zonkos.ict"
 
 $crllist = Get-CACrlDistributionPoint; foreach ($crl in $crllist) { Remove-CACrlDistributionPoint $crl.uri -Force };
 Add-CACRLDistributionPoint -Uri C:\Windows\System32\CertSrv\CertEnroll\%3%8.crl -PublishToServer -Force
-Add-CACRLDistributionPoint -Uri http://crl.$domain/pki/%3%8.crl -AddToCertificateCDP -AddToFreshestCrl -Force
+Add-CACRLDistributionPoint -Uri http://crl.$domain_name/pki/%3%8.crl -AddToCertificateCDP -AddToFreshestCrl -Force
 Get-CAAuthorityInformationAccess | Where-Object { $_.Uri -like '*ldap*' -or $_.Uri -like '*http*' -or $_.Uri -like '*file*' } | Remove-CAAuthorityInformationAccess -Force
-# Add-CAAuthorityInformationAccess -AddToCertificateAia http://pki.bedrock.domain/pki/BEDROCK-ROOT%3%4.crt -Force
 
 
 certutil.exe -setreg CA\CRLPeriodUnits 10 # need to understand these values
@@ -18,10 +16,10 @@ Restart-Service certsvc -Verbose
 
 # Verify that two and only two CRL distribution points are configured.
 Get-CACRLDistributionPoint | format-list
-
-New-Item -ItemType Directory C:\Allthings\to_subca
-Copy-Item C:\Windows\System32\CertSrv\CertEnroll\*.* C:\Allthings\to_subca
-Get-ChildItem C:\Allthings\to_subca\
+# create a directory and store the file to the folder.
+New-Item -ItemType Directory C:\allthings\from_rootca -Verbose
+Copy-Item C:\Windows\System32\CertSrv\CertEnroll\*.* C:\Allthings\from_rootca -Verbose
+Get-ChildItem C:\Allthings\from_rootca\ -Verbose
 
 
 # new-smbshare -name ca_files C:\ca_files -FullAccess "offlrootca\certadmin"
